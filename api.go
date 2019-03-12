@@ -8,34 +8,28 @@ import (
 	"github.com/machinebox/graphql"
 )
 
-func ghCall() {
-	gqClient := graphql.NewClient("https://api.github.com/graphql")
-	gqClient.Log = func(s string) { log.Println(s) }
+func Repositories() {
+	client := defaultGraphQLConnection()
+	repoRequest := graphql.NewRequest(`
+        query getRepos($login: String!, $last: Int!){
+            user(login: $login) {
+            repositories(last: $last) {
+                    nodes {
+                        nameWithOwner
+                        description
+                    }
+                }
+            }
+        }
+    `)
 
-	repoRequest := graphql.NewRequest(`query getRepos($login: String!, $first: Int!){
-		user(login: $login) {
-		  repositories(first: $first) {
-			nodes {
-			  name
-			  description
-			}
-		  }
-		}
-	  }`)
-	repoRequest.Var("login", "...")
-	repoRequest.Var("first", 10)
-
-	user, err := configReader()
-	if err != nil {
-		return
-	}
-
-	repoRequest.Header.Set("Authorization", "Bearer "+user.Token)
+	SetupRequest(repoRequest)
+	repoRequest.Var("last", 5)
 
 	ctx := context.Background()
 
 	var respData map[string]interface{}
-	if err := gqClient.Run(ctx, repoRequest, &respData); err != nil {
+	if err := client.Run(ctx, repoRequest, &respData); err != nil {
 		log.Fatal(err)
 		return
 	}
@@ -46,4 +40,21 @@ func ghCall() {
 	}
 
 	log.Println("Response: " + string(prettier))
+}
+
+func SetupRequest(req *graphql.Request) {
+	user, err := ConfigReader()
+	if err != nil {
+		return
+	}
+
+	req.Var("login", user.Id)
+	req.Header.Set("Authorization", "Bearer "+user.Token)
+}
+
+func defaultGraphQLConnection() *graphql.Client {
+	graphQLClient := graphql.NewClient("https://api.github.com/graphql")
+	graphQLClient.Log = func(s string) { log.Println(s) }
+
+	return graphQLClient
 }
