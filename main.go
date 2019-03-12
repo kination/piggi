@@ -22,8 +22,11 @@ func terminalAction(c *cli.Context) error {
 	switch subject {
 	case "repo":
 		log.Println("selected repo")
+		GetRepositories()
 	case "issue":
 		log.Println("selected issue")
+	case "noti":
+		log.Println("selected noti")
 	case "user":
 		log.Println("selected user")
 	default:

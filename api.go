@@ -2,21 +2,24 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"log"
 
 	"github.com/machinebox/graphql"
 )
 
-func Repositories() {
+func GetRepositories() {
 	client := defaultGraphQLConnection()
 	repoRequest := graphql.NewRequest(`
         query getRepos($login: String!, $last: Int!){
             user(login: $login) {
-            repositories(last: $last) {
+                repositories(last: $last orderBy: {
+                    field:UPDATED_AT
+                    direction: ASC
+                    }) {
                     nodes {
                         nameWithOwner
                         description
+                        url
                     }
                 }
             }
@@ -28,18 +31,13 @@ func Repositories() {
 
 	ctx := context.Background()
 
-	var respData map[string]interface{}
-	if err := client.Run(ctx, repoRequest, &respData); err != nil {
+	var response RepositoryResponse
+	if err := client.Run(ctx, repoRequest, &response); err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	prettier, err := json.MarshalIndent(respData, "", "  ")
-	if err != nil {
-		return
-	}
-
-	log.Println("Response: " + string(prettier))
+	RepoFormatter(response)
 }
 
 func SetupRequest(req *graphql.Request) {
@@ -54,7 +52,7 @@ func SetupRequest(req *graphql.Request) {
 
 func defaultGraphQLConnection() *graphql.Client {
 	graphQLClient := graphql.NewClient("https://api.github.com/graphql")
-	graphQLClient.Log = func(s string) { log.Println(s) }
+	// graphQLClient.Log = func(s string) { log.Println(s) }
 
 	return graphQLClient
 }
