@@ -11,11 +11,11 @@ type User struct {
 	Token string `json:"token"`
 }
 
-func configReader() {
+func configReader() (User, error) {
 	jsonRaw, err := os.Open("user.json")
 	if err != nil {
 		log.Println(err)
-		return
+		return User{}, err
 	}
 
 	defer jsonRaw.Close()
@@ -24,10 +24,11 @@ func configReader() {
 
 	if err != nil {
 		log.Println(err)
-		return
+		return User{}, err
 	}
 
 	var user User
 	json.Unmarshal(userByte, &user)
-	log.Println(user.Token)
+
+	return user, nil
 }
