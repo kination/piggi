@@ -40,3 +40,7 @@
 [[constraint]]
   name = "github.com/machinebox/graphql"
   version = "0.2.2"
+
+[[constraint]]
+  name = "github.com/urfave/cli"
+  version = "1.20.0"

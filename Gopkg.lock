@@ -63,26 +63,6 @@
   revision = "1003c8bd00dc2869cb5ca5282e6ce33834fed514"
 
 [[projects]]
-  digest = "1:b1b6d04c3d4288719efc24ae4e52d24808530f5d28b1a9e4897ea5ad047b6124"
-  name = "github.com/graphql-go/graphql"
-  packages = [
-    ".",
-    "gqlerrors",
-    "language/ast",
-    "language/kinds",
-    "language/lexer",
-    "language/location",
-    "language/parser",
-    "language/printer",
-    "language/source",
-    "language/typeInfo",
-    "language/visitor",
-  ]
-  pruneopts = "UT"
-  revision = "08943645bf265d192b32f2100cdff2428f7ae7c5"
-  version = "v0.7.7"
-
-[[projects]]
   branch = "master"
   digest = "1:e51f40f0c19b39c1825eadd07d5c0a98a2ad5942b166d9fc4f54750ce9a04810"
   name = "github.com/juju/ansiterm"
@@ -175,6 +155,14 @@
   revision = "210d2dc333e90c7e3eedf4f2242507a8e83ed4ab"
 
 [[projects]]
+  digest = "1:b24d38b282bacf9791408a080f606370efa3d364e4b5fd9ba0f7b87786d3b679"
+  name = "github.com/urfave/cli"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
+  version = "v1.20.0"
+
+[[projects]]
   branch = "master"
   digest = "1:f36c7b9a36158e62ffe5d8b02d1b5955500c13106cdaeebf5323d88863cae96f"
   name = "golang.org/x/sys"
@@ -215,9 +203,9 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/graphql-go/graphql",
     "github.com/machinebox/graphql",
     "github.com/manifoldco/promptui",
+    "github.com/urfave/cli",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
