@@ -43,11 +43,11 @@ func GetRepositories() (RepositoryResponse, error) {
 func GetIssues() {
 	client := defaultGraphQLConnection()
 	issueRequest := graphql.NewRequest(`
-        query getIssues($login: String!, $last: Int!){
+        query getIssues($login: String!, $first: Int!){
             user(login: $login) {
-                issues(last: $last states:OPEN orderBy:{
+                issues(first: $first orderBy:{
                     field:UPDATED_AT
-                    direction: ASC
+                    direction: DESC
                 }) {
                     nodes {
                         title
@@ -60,7 +60,7 @@ func GetIssues() {
     `)
 
 	SetupRequest(issueRequest)
-	issueRequest.Var("last", 10)
+	issueRequest.Var("first", 20)
 
 	ctx := context.Background()
 
