@@ -18,18 +18,30 @@ type RepositoryResponse struct {
 	}
 }
 
+type IssueResponse struct {
+	User struct {
+		Issues struct {
+			Nodes []struct {
+				Title        string
+				ResourcePath string
+				Url          string
+			}
+		}
+	}
+}
+
 func RepositoryPrompter(repo RepositoryResponse) {
 	repoList := repo.User.Repositories.Nodes
 	templates := &promptui.SelectTemplates{
-		Label:    "{{ . }}?",
-		Active:   "\U0001F645 {{ .NameWithOwner | cyan }}",
+		Label:    "  [ {{ . }} ]",
+		Active:   "\U000026F3 {{ .NameWithOwner | red }}",
 		Inactive: "  {{ .NameWithOwner | cyan }}",
-		Selected: "\U0001F645 {{ .NameWithOwner | green | cyan }}",
+		Selected: "\U000026F3 {{ .NameWithOwner | green | cyan }}",
 		Details: `
-	--------- Repo ----------
-	{{ "Name:" | faint }}	{{ .NameWithOwner }}
-	{{ "Description:" | faint }}	{{ .Description }}
-	`,
+--------- Repo ----------
+{{ "Name:" | faint }}	{{ .NameWithOwner }}
+{{ "Description:" | faint }}	{{ .Description }}
+`,
 	}
 
 	prompt := promptui.Select{
