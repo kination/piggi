@@ -7,7 +7,7 @@ import (
 	"github.com/machinebox/graphql"
 )
 
-func GetRepositories() {
+func GetRepositories() (RepositoryResponse, error) {
 	client := defaultGraphQLConnection()
 	repoRequest := graphql.NewRequest(`
         query getRepos($login: String!, $last: Int!){
@@ -27,17 +27,17 @@ func GetRepositories() {
     `)
 
 	SetupRequest(repoRequest)
-	repoRequest.Var("last", 5)
+	repoRequest.Var("last", 10)
 
 	ctx := context.Background()
 
 	var response RepositoryResponse
 	if err := client.Run(ctx, repoRequest, &response); err != nil {
 		log.Fatal(err)
-		return
+		return response, err
 	}
 
-	RepoFormatter(response)
+	return response, nil
 }
 
 func SetupRequest(req *graphql.Request) {

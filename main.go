@@ -21,8 +21,14 @@ func terminalAction(c *cli.Context) error {
 	subject := c.Args().Get(0)
 	switch subject {
 	case "repo":
-		log.Println("selected repo")
-		GetRepositories()
+		repo, err := GetRepositories()
+		if err != nil {
+			return err
+		}
+
+		RepositoryPrompter(repo)
+		return nil
+
 	case "issue":
 		log.Println("selected issue")
 	case "noti":
