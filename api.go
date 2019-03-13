@@ -40,6 +40,39 @@ func GetRepositories() (RepositoryResponse, error) {
 	return response, nil
 }
 
+func GetIssues() {
+	client := defaultGraphQLConnection()
+	issueRequest := graphql.NewRequest(`
+        query getIssues($login: String!, $last: Int!){
+            user(login: $login) {
+                issues(last: $last states:OPEN orderBy:{
+                    field:UPDATED_AT
+                    direction: ASC
+                }) {
+                    nodes {
+                        title
+                        resourcePath
+                        url
+                    }
+                }
+            }
+        }
+    `)
+
+	SetupRequest(issueRequest)
+	issueRequest.Var("last", 10)
+
+	ctx := context.Background()
+
+	var response IssueResponse
+	if err := client.Run(ctx, issueRequest, &response); err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	IssuePrompter(response)
+}
+
 func SetupRequest(req *graphql.Request) {
 	user, err := ConfigReader()
 	if err != nil {
