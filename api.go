@@ -111,6 +111,32 @@ func GetPullRequests() (PullRequestResponse, error) {
 	return response, nil
 }
 
+func GetUserInfo() (UserResponse, error) {
+	client := defaultGraphQLConnection()
+	userRequest := graphql.NewRequest(`
+        query getUser($login: String!){
+            user(login: $login) {
+				bio
+				email
+				createdAt
+				company
+            }
+        }
+    `)
+
+	setupRequest(userRequest)
+
+	ctx := context.Background()
+
+	var response UserResponse
+	if err := client.Run(ctx, userRequest, &response); err != nil {
+		log.Fatal(err)
+		return response, err
+	}
+
+	return response, nil
+}
+
 func setupRequest(req *graphql.Request) {
 	user, err := ConfigReader()
 	if err != nil {

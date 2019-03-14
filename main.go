@@ -57,9 +57,10 @@ func terminalAction(c *cli.Context) error {
 			// defaultAPIConnection()
 	*/
 	case "user":
-		log.Println("selected user")
+		printoutUser()
+
 	default:
-		log.Println("Wrong selection!!")
+		log.Println("Wrong selection!")
 	}
 
 	return nil
