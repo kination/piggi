@@ -75,10 +75,10 @@ func IssuePrompter(issue IssueResponse) {
 		Inactive: "  {{ .Title | cyan }} ({{ .UpdatedAt | green }})",
 		Selected: "\U0001F47F {{ .Title | green | red }}",
 		Details: `
-	--------- Repo ----------
-	{{ "Description:" | faint }}	{{ .BodyText }}
-	{{ "Resource:" | faint }}	{{ .ResourcePath }}
-	`,
+--------- Repo ----------
+{{ "Description:" | faint }}	{{ .BodyText }}
+{{ "Resource:" | faint }}	{{ .ResourcePath }}
+`,
 	}
 
 	reformedIssues := reformIssueData(issueList)
@@ -108,7 +108,7 @@ func reformIssueData(issueList []IssueNode) []IssueNode {
 			Title:        v.Title,
 			UpdatedAt:    GetPassedTime(v.UpdatedAt),
 			ResourcePath: v.ResourcePath,
-			BodyText:     TruncateString(v.BodyText),
+			BodyText:     TruncateLongText(v.BodyText),
 			Url:          v.Url,
 		})
 	}

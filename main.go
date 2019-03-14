@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -19,25 +20,47 @@ func main() {
 
 func terminalAction(c *cli.Context) error {
 	subject := c.Args().Get(0)
+
 	switch subject {
 	case "repo":
+		printoutSubject("Repositories")
 		repo, err := GetRepositories()
 		if err != nil {
 			return err
 		}
 
 		RepositoryPrompter(repo)
-		return nil
 
 	case "issue":
-		log.Println("selected issue")
-	case "noti":
-		log.Println("selected noti")
+		printoutSubject("Issues")
+		issue, err := GetIssues()
+		if err != nil {
+			return err
+		}
+
+		IssuePrompter(issue)
+
+	case "pr":
+		printoutSubject("Pull Requests")
+
+	// TODO: Prompter for Notification
+	/*
+		case "noti":
+			printoutSubject("Notifications")
+			log.Println("selected noti")
+			// defaultAPIConnection()
+	*/
 	case "user":
 		log.Println("selected user")
 	default:
-		log.Println("wrong selection")
+		log.Println("Wrong selection!!")
 	}
 
 	return nil
+}
+
+func printoutSubject(subject string) {
+	fmt.Println("\n==================================")
+	fmt.Println("\n Look over " + subject + "")
+	fmt.Println("\n==================================\n")
 }

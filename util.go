@@ -22,7 +22,7 @@ func OpenBrowser(url string) bool {
 	return cmd.Start() == nil
 }
 
-func TruncateString(org string) string {
+func TruncateLongText(org string) string {
 	const maxLength = 40
 	re := regexp.MustCompile(`\r?\n\s+`)
 	ellipsed := re.ReplaceAllString(org, " ")
