@@ -17,7 +17,8 @@ func GetRepositories() (RepositoryResponse, error) {
                     direction: DESC
                     }) {
                     nodes {
-                        nameWithOwner
+						nameWithOwner
+						updatedAt
                         description
                         url
                     }
@@ -50,7 +51,8 @@ func GetIssues() {
                     direction: DESC
                 }) {
                     nodes {
-                        title
+						title
+						updatedAt
 						resourcePath
 						bodyText
                         url

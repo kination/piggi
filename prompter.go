@@ -10,8 +10,9 @@ type RepositoryResponse struct {
 	User struct {
 		Repositories struct {
 			Nodes []struct {
-				Description   string
 				NameWithOwner string
+				UpdatedAt     string
+				Description   string
 				Url           string
 			}
 		}
@@ -28,6 +29,7 @@ type IssueResponse struct {
 
 type IssueNode struct {
 	Title        string
+	UpdatedAt    string
 	ResourcePath string
 	BodyText     string
 	Url          string
@@ -69,8 +71,8 @@ func IssuePrompter(issue IssueResponse) {
 
 	templates := &promptui.SelectTemplates{
 		Label:    "  [ {{ . }} ]",
-		Active:   "\U0001F47F {{ .Title | red }}",
-		Inactive: "  {{ .Title | cyan }}",
+		Active:   "\U0001F47F {{ .Title | red }} ({{ .UpdatedAt | green }})",
+		Inactive: "  {{ .Title | cyan }} ({{ .UpdatedAt | green }})",
 		Selected: "\U0001F47F {{ .Title | green | red }}",
 		Details: `
 	--------- Repo ----------
@@ -95,14 +97,16 @@ func IssuePrompter(issue IssueResponse) {
 	}
 
 	fmt.Printf("Go to issue %q\n", issueList[index].Title)
-	// OpenBrowser(issueList[index].Url)
+	OpenBrowser(issueList[index].Url)
 }
 
 func reformIssueData(issueList []IssueNode) []IssueNode {
 	var reformedNode []IssueNode
 	for _, v := range issueList {
+		GetPassedTime(v.UpdatedAt)
 		reformedNode = append(reformedNode, IssueNode{
 			Title:        v.Title,
+			UpdatedAt:    GetPassedTime(v.UpdatedAt),
 			ResourcePath: v.ResourcePath,
 			BodyText:     TruncateString(v.BodyText),
 			Url:          v.Url,

@@ -1,10 +1,12 @@
 package main
 
 import (
-	"log"
 	"os/exec"
 	"regexp"
 	"runtime"
+	"strconv"
+	"strings"
+	"time"
 )
 
 func OpenBrowser(url string) bool {
@@ -32,12 +34,26 @@ func TruncateString(org string) string {
 }
 
 func GetPassedTime(date string) string {
-	log.Println(date)
-	/*
-		t, err := time.Parse(date)
-		if err != nil {
-			panic(err)
-		}
-	*/
+	t, err := time.Parse(time.RFC3339, date)
+	var passedTime string
+	if err != nil {
+		panic(err)
+	}
 
+	if time.Now().Sub(t).Seconds() < 60 {
+		passedTime = strings.Join(
+			[]string{strconv.Itoa(int(time.Now().Sub(t).Seconds())), " seconds before"}, "")
+	} else if time.Now().Sub(t).Minutes() < 60 {
+		passedTime = strings.Join(
+			[]string{strconv.Itoa(int(time.Now().Sub(t).Minutes())), " minutes before"}, "")
+	} else if time.Now().Sub(t).Hours() < 60 {
+		passedTime = strings.Join(
+			[]string{strconv.Itoa(int(time.Now().Sub(t).Hours())), " hours before"}, "")
+	} else {
+		days := int(time.Now().Sub(t).Hours()) / 24
+		passedTime = strings.Join(
+			[]string{strconv.Itoa(days), " days before"}, "")
+	}
+
+	return passedTime
 }
