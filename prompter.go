@@ -21,13 +21,16 @@ type RepositoryResponse struct {
 type IssueResponse struct {
 	User struct {
 		Issues struct {
-			Nodes []struct {
-				Title        string
-				ResourcePath string
-				Url          string
-			}
+			Nodes []IssueNode
 		}
 	}
+}
+
+type IssueNode struct {
+	Title        string
+	ResourcePath string
+	BodyText     string
+	Url          string
 }
 
 func RepositoryPrompter(repo RepositoryResponse) {
@@ -63,21 +66,24 @@ func RepositoryPrompter(repo RepositoryResponse) {
 
 func IssuePrompter(issue IssueResponse) {
 	issueList := issue.User.Issues.Nodes
+
 	templates := &promptui.SelectTemplates{
 		Label:    "  [ {{ . }} ]",
 		Active:   "\U0001F47F {{ .Title | red }}",
 		Inactive: "  {{ .Title | cyan }}",
 		Selected: "\U0001F47F {{ .Title | green | red }}",
 		Details: `
---------- Repo ----------
-{{ "Title:" | faint }}	{{ .Title }}
-{{ "Resource:" | faint }}	{{ .ResourcePath }}
-`,
+	--------- Repo ----------
+	{{ "Description:" | faint }}	{{ .BodyText }}
+	{{ "Resource:" | faint }}	{{ .ResourcePath }}
+	`,
 	}
+
+	reformedIssues := reformIssueData(issueList)
 
 	prompt := promptui.Select{
 		Label:     "Issues",
-		Items:     issueList,
+		Items:     reformedIssues,
 		Templates: templates,
 	}
 
@@ -89,5 +95,19 @@ func IssuePrompter(issue IssueResponse) {
 	}
 
 	fmt.Printf("Go to issue %q\n", issueList[index].Title)
-	OpenBrowser(issueList[index].Url)
+	// OpenBrowser(issueList[index].Url)
+}
+
+func reformIssueData(issueList []IssueNode) []IssueNode {
+	var reformedNode []IssueNode
+	for _, v := range issueList {
+		reformedNode = append(reformedNode, IssueNode{
+			Title:        v.Title,
+			ResourcePath: v.ResourcePath,
+			BodyText:     TruncateString(v.BodyText),
+			Url:          v.Url,
+		})
+	}
+
+	return reformedNode
 }
