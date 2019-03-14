@@ -10,11 +10,11 @@ import (
 func GetRepositories() (RepositoryResponse, error) {
 	client := defaultGraphQLConnection()
 	repoRequest := graphql.NewRequest(`
-        query getRepos($login: String!, $last: Int!){
+        query getRepos($login: String!, $first: Int!){
             user(login: $login) {
-                repositories(last: $last orderBy: {
+                repositories(first: $first orderBy: {
                     field:UPDATED_AT
-                    direction: ASC
+                    direction: DESC
                     }) {
                     nodes {
                         nameWithOwner
@@ -26,8 +26,8 @@ func GetRepositories() (RepositoryResponse, error) {
         }
     `)
 
-	SetupRequest(repoRequest)
-	repoRequest.Var("last", 10)
+	setupRequest(repoRequest)
+	repoRequest.Var("first", 10)
 
 	ctx := context.Background()
 
@@ -51,7 +51,8 @@ func GetIssues() {
                 }) {
                     nodes {
                         title
-                        resourcePath
+						resourcePath
+						bodyText
                         url
                     }
                 }
@@ -59,7 +60,7 @@ func GetIssues() {
         }
     `)
 
-	SetupRequest(issueRequest)
+	setupRequest(issueRequest)
 	issueRequest.Var("first", 20)
 
 	ctx := context.Background()
@@ -73,9 +74,10 @@ func GetIssues() {
 	IssuePrompter(response)
 }
 
-func SetupRequest(req *graphql.Request) {
+func setupRequest(req *graphql.Request) {
 	user, err := ConfigReader()
 	if err != nil {
+		// TODO: error handler
 		return
 	}
 
