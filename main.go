@@ -14,7 +14,7 @@ func main() {
 
 	err := gitti.Run(os.Args)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 }
 
@@ -42,6 +42,12 @@ func terminalAction(c *cli.Context) error {
 
 	case "pr":
 		printoutSubject("Pull Requests")
+		pr, err := GetPullRequests()
+		if err != nil {
+			panic(err)
+		}
+
+		PRPrompter(pr)
 
 	// TODO: Prompter for Notification
 	/*

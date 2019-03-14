@@ -76,6 +76,41 @@ func GetIssues() (IssueResponse, error) {
 	return response, nil
 }
 
+func GetPullRequests() (PullRequestResponse, error) {
+	client := defaultGraphQLConnection()
+	prRequest := graphql.NewRequest(`
+        query getIssues($login: String!, $first: Int!){
+            user(login: $login) {
+                pullRequests(first: $first states: OPEN orderBy:{
+                    field:UPDATED_AT
+                    direction: DESC
+                }) {
+                    nodes {
+						title
+						updatedAt
+						resourcePath
+						bodyText
+                        url
+                    }
+                }
+            }
+        }
+    `)
+
+	setupRequest(prRequest)
+	prRequest.Var("first", 20)
+
+	ctx := context.Background()
+
+	var response PullRequestResponse
+	if err := client.Run(ctx, prRequest, &response); err != nil {
+		log.Fatal(err)
+		return response, err
+	}
+
+	return response, nil
+}
+
 func setupRequest(req *graphql.Request) {
 	user, err := ConfigReader()
 	if err != nil {

@@ -22,12 +22,20 @@ type RepositoryResponse struct {
 type IssueResponse struct {
 	User struct {
 		Issues struct {
-			Nodes []IssueNode
+			Nodes []IssuePRNode
 		}
 	}
 }
 
-type IssueNode struct {
+type PullRequestResponse struct {
+	User struct {
+		PullRequests struct {
+			Nodes []IssuePRNode
+		}
+	}
+}
+
+type IssuePRNode struct {
 	Title        string
 	UpdatedAt    string
 	ResourcePath string
@@ -96,15 +104,49 @@ func IssuePrompter(issue IssueResponse) {
 		return
 	}
 
-	fmt.Printf("Go to issue %q\n", issueList[index].Title)
-	OpenBrowser(issueList[index].Url)
+	fmt.Printf("Go to issue %q\n", reformedIssues[index].Title)
+	OpenBrowser(reformedIssues[index].Url)
 }
 
-func reformIssueData(issueList []IssueNode) []IssueNode {
-	var reformedNode []IssueNode
+func PRPrompter(issue PullRequestResponse) {
+	prList := issue.User.PullRequests.Nodes
+
+	templates := &promptui.SelectTemplates{
+		Label:    "  [ {{ . }} ]",
+		Active:   "\U0001F47F {{ .Title | red }} ({{ .UpdatedAt | green }})",
+		Inactive: "  {{ .Title | cyan }} ({{ .UpdatedAt | green }})",
+		Selected: "\U0001F47F {{ .Title | green | red }}",
+		Details: `
+--------- Repo ----------
+{{ "Description:" | faint }}	{{ .BodyText }}
+{{ "Resource:" | faint }}	{{ .ResourcePath }}
+`,
+	}
+
+	reformedPRs := reformIssueData(prList)
+
+	prompt := promptui.Select{
+		Label:     "Pull requests",
+		Items:     reformedPRs,
+		Templates: templates,
+	}
+
+	index, _, err := prompt.Run()
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		return
+	}
+
+	fmt.Printf("Go to PR %q\n", reformedPRs[index].Title)
+	OpenBrowser(reformedPRs[index].Url)
+}
+
+func reformIssueData(issueList []IssuePRNode) []IssuePRNode {
+	var reformedNode []IssuePRNode
 	for _, v := range issueList {
 		GetPassedTime(v.UpdatedAt)
-		reformedNode = append(reformedNode, IssueNode{
+		reformedNode = append(reformedNode, IssuePRNode{
 			Title:        v.Title,
 			UpdatedAt:    GetPassedTime(v.UpdatedAt),
 			ResourcePath: v.ResourcePath,
