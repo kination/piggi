@@ -9,10 +9,10 @@ import (
 )
 
 func main() {
-	gitti := cli.NewApp()
-	gitti.Action = terminalAction
+	piggi := cli.NewApp()
+	piggi.Action = terminalAction
 
-	err := gitti.Run(os.Args)
+	err := piggi.Run(os.Args)
 	if err != nil {
 		panic(err)
 	}

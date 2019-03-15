@@ -17,8 +17,8 @@ func GetRepositories() (RepositoryResponse, error) {
                     direction: DESC
                     }) {
                     nodes {
-						nameWithOwner
-						updatedAt
+                        nameWithOwner
+                        updatedAt
                         description
                         url
                     }
@@ -51,10 +51,10 @@ func GetIssues() (IssueResponse, error) {
                     direction: DESC
                 }) {
                     nodes {
-						title
-						updatedAt
-						resourcePath
-						bodyText
+                        title
+                        updatedAt
+                        resourcePath
+                        bodyText
                         url
                     }
                 }
@@ -86,10 +86,10 @@ func GetPullRequests() (PullRequestResponse, error) {
                     direction: DESC
                 }) {
                     nodes {
-						title
-						updatedAt
-						resourcePath
-						bodyText
+                        title
+                        updatedAt
+                        resourcePath
+                        bodyText
                         url
                     }
                 }
@@ -116,10 +116,10 @@ func GetUserInfo() (UserResponse, error) {
 	userRequest := graphql.NewRequest(`
         query getUser($login: String!){
             user(login: $login) {
-				bio
-				email
-				createdAt
-				company
+                bio
+                email
+                createdAt
+                company
             }
         }
     `)

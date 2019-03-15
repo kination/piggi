@@ -10,7 +10,6 @@ import (
 type User struct {
 	Token string `json:"token"`
 	Id    string `json:"id"`
-	Email string `json:"email"`
 }
 
 func ConfigReader() (User, error) {

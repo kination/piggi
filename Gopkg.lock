@@ -48,11 +48,12 @@
   revision = "883fe33ffc4344bad1ecd881f61afd5ec5d80e0a"
 
 [[projects]]
-  digest = "1:750e747d0aad97b79f4a4e00034bae415c2ea793fd9e61438d966ee9c79579bf"
+  branch = "master"
+  digest = "1:473e7c5cbc58c538bce66e0ca2a033d31a3e7d9c6d5d96c6df1657b588bddac3"
   name = "github.com/google/shlex"
   packages = ["."]
   pruneopts = "UT"
-  revision = "6f45313302b9c56850fc17f99e40caebce98c716"
+  revision = "c34317bd91bf98fab745d77b03933cf8769299fe"
 
 [[projects]]
   branch = "master"
@@ -110,12 +111,12 @@
   version = "v0.1.1"
 
 [[projects]]
-  digest = "1:3bb9c8451d199650bfd303e0068d86f135952fead374ad87c09a9b8a2cc4bd7c"
+  digest = "1:e150b5fafbd7607e2d638e4e5cf43aa4100124e5593385147b0a74e2733d8b0d"
   name = "github.com/mattn/go-isatty"
   packages = ["."]
   pruneopts = "UT"
-  revision = "369ecd8cea9851e459abb67eb171853e3986591e"
-  version = "v0.0.6"
+  revision = "c2a7a6ca930a4cd0bc33a3f298eb71960732a3a7"
+  version = "v0.0.7"
 
 [[projects]]
   digest = "1:07140002dbf37da92090f731b46fa47be4820b82fe5c14a035203b0e813d0ec2"
@@ -168,7 +169,7 @@
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "c8c8c57fd1e1a977c10821a559dda983a9a9a3b5"
+  revision = "fead79001313d15903fb4605b4a1b781532cd93e"
 
 [[projects]]
   branch = "master"
@@ -181,15 +182,15 @@
     "go/types/typeutil",
   ]
   pruneopts = "UT"
-  revision = "5c2858a9cfe5880270ceee8da4391f3c44612b47"
+  revision = "8b67d361bba210f5fbb3c1a0fc121e0847b10b57"
 
 [[projects]]
   branch = "v3-unstable"
-  digest = "1:39efb07a0d773dc09785b237ada4e10b5f28646eb6505d97bc18f8d2ff439362"
+  digest = "1:9e71973a6f518a213cbbfa8c24feab33046b2835684818cb6b2c9ea73e823639"
   name = "gopkg.in/alecthomas/kingpin.v3-unstable"
   packages = ["."]
   pruneopts = "UT"
-  revision = "63abe20a23e29e80bbef8089bd3dee3ac25e5306"
+  revision = "df19058c872cddcd279411d709047160e543a700"
 
 [[projects]]
   digest = "1:4d2e5a73dc1500038e504a8d78b986630e3626dc027bc030ba5c75da257cdb96"
