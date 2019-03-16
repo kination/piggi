@@ -13,9 +13,9 @@ But I wanted to make something which can interact more simple, using direction k
 
 ## Detail
 This app is based on
-- Golang
-- GraphQL
-- GitHub API v4
+> - Golang
+> - GraphQL
+> - GitHub API v4
 
 
 # Basic Usage
@@ -92,11 +92,9 @@ pr | show your pull requests, order by updated date
 Welcome for contributions!
 
 It is very unstable, and still lot of things to do:
-- Suggestions which will make it more useful
-- Flexible design
-- Code refactoring
-- Test code
-- Bug fix
-- Document update
-- ...
-
+> - Suggestions which will make it more useful
+> - Flexible design
+> - Code refactoring
+> - Bug fix
+> - Document update
+> - ...
